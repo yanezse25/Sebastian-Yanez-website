@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number and Letter Translator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header, footer { background-color: #333; color: white; padding: 1em; text-align: center; }
+    nav a { margin: 0 1em; color: white; text-decoration: none; }
+    section { padding: 2em; }
+    input, select, button { margin: 0.5em 0; padding: 0.5em; }
+    .flashcard { border: 1px solid #ccc; border-radius: 8px; padding: 1em; margin: 0.5em 0; text-align: center; background-color: #f9f9f9; cursor: pointer; }
+    iframe { display: block; margin: 1em auto; max-width: 100%; height: 300px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Number and Letter Translator</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#alphabet">Alphabet</a>
+      <a href="#numbers">Numbers</a>
+      <a href="#games">Games</a>
+      <a href="#resources">Resources</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+
+  <section id="home">
+    <h2>Welcome!</h2>
+    <p>This website helps you learn the alphabet and numbers in different languages.</p>
+    <label for="language">Choose a language to learn:</label>
+    <select id="language">
+      <option value="spanish">Spanish</option>
+      <option value="french">French</option>
+      <option value="german">German</option>
+    </select>
+  </section>
+
+  <section id="alphabet">
+    <h2>Alphabet Section</h2>
+    <h3>A. Alphabet Overview</h3>
+    <p>Description of the alphabet in the chosen language.</p>
+    <h3>B. Individual Letter Practice</h3>
+    <input id="letterInput" placeholder="Enter a letter (A-Z)" />
+    <button onclick="translateLetter()">Translate Letter</button>
+    <p id="letterOutput"></p>
+  </section>
+
+  <section id="numbers">
+    <h2>Numbers Section</h2>
+    <h3>A. Numbers Overview</h3>
+    <p>Description of numbers in the target language.</p>
+    <h3>B. Individual Number Practice</h3>
+    <input id="numberInput" placeholder="Enter a number (1-100)" type="number" />
+    <button onclick="translateNumber()">Translate Number</button>
+    <p id="numberOutput"></p>
+  </section>
+
+  <section id="games">
+    <h2>Games Section</h2>
+    <h3>A. Alphabet Games</h3>
+    <p>Matching Flashcards:</p>
+    <div id="alphabetFlashcards"></div>
+    <h3>B. Number Games</h3>
+    <p>Matching Flashcards:</p>
+    <div id="numberFlashcards"></div>
+  </section>
+
+  <section id="resources">
+    <h2>Resources Section</h2>
+    <h3>A. Printable Worksheets</h3>
+    <ul>
+      <li>Language Alphabet Worksheets</li>
+      <li>Language Number Worksheets</li>
+    </ul>
+    <h3>B. Educational Video Resources</h3>
+    <ul>
+      <li>Pronunciation Videos</li>
+      <li>Writing Letters and Numbers</li>
+    </ul>
+    <h4>Video Examples:</h4>
+    <iframe src="https://www.youtube.com/embed/LCpNYW8sI_Q" title="Spanish Numbers"></iframe>
+    <iframe src="https://www.youtube.com/embed/wvZxQZgIKvY" title="French Alphabet"></iframe>
+    <iframe src="https://www.youtube.com/embed/RAU5Zb-Jq9Y" title="German Alphabet"></iframe>
+  </section>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <p>This website was created to make learning letters and numbers in other languages fun and interactive.</p>
+    <p>Hi, I'm Sebastian Yanez, the creator! I built this to help others learn just like I did.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: contact@languagelearner.com</p>
+    <p>Follow us on social media!</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Number and Letter Translator</p>
+  </footer>
+
+  <script>
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+    const letterTranslations = {
+      spanish: {
+        a: "a", b: "be", c: "ce", d: "de", e: "e", f: "efe", g: "ge", h: "hache", i: "i", j: "jota", k: "ka", l: "ele", m: "eme", n: "ene", o: "o", p: "pe", q: "cu", r: "erre", s: "ese", t: "te", u: "u", v: "uve", w: "uve doble", x: "equis", y: "i griega", z: "zeta"
+      },
+      french: {
+        a: "ah", b: "bay", c: "say", d: "day", e: "uh", f: "eff", g: "jay", h: "ash", i: "ee", j: "zhee", k: "kah", l: "ell", m: "em", n: "en", o: "oh", p: "pay", q: "coo", r: "air", s: "ess", t: "tay", u: "oo", v: "vay", w: "doo-bluh-vay", x: "eeks", y: "ee-grek", z: "zed"
+      },
+      german: {
+        a: "ah", b: "beh", c: "tseh", d: "deh", e: "eh", f: "eff", g: "geh", h: "hah", i: "ee", j: "yott", k: "kah", l: "ell", m: "emm", n: "enn", o: "oh", p: "peh", q: "kuh", r: "err", s: "ess", t: "teh", u: "uh", v: "fau", w: "veh", x: "iks", y: "üpsilon", z: "tsett"
+      }
+    };
+
+    const numberTranslations = {
+      spanish: Object.fromEntries(["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez"].map((val, i) => [i, val])),
+      french: Object.fromEntries(["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"].map((val, i) => [i, val])),
+      german: Object.fromEntries(["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn"].map((val, i) => [i, val]))
+    };
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function createMatchingFlashcards(sourceObj, containerId, count = 5) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      const entries = shuffleArray(Object.entries(sourceObj).filter(([k, v]) => v)).slice(0, count);
+      entries.forEach(([key, val]) => {
+        const card = document.createElement('div');
+        card.className = 'flashcard';
+        card.textContent = `${key.toUpperCase()} → ???`;
+        card.onclick = () => card.textContent = `${key.toUpperCase()} → ${val}`;
+        container.appendChild(card);
+      });
+    }
+
+    function createFlashcards() {
+      const lang = document.getElementById("language").value;
+      createMatchingFlashcards(letterTranslations[lang], "alphabetFlashcards");
+      createMatchingFlashcards(numberTranslations[lang], "numberFlashcards");
+    }
+
+    function translateLetter() {
+      const lang = document.getElementById("language").value;
+      const letter = document.getElementById("letterInput").value.toLowerCase();
+      const output = letterTranslations[lang][letter] || "Translation not found.";
+      document.getElementById("letterOutput").textContent = `Translation: ${output}`;
+      createFlashcards();
+    }
+
+    function translateNumber() {
+      const lang = document.getElementById("language").value;
+      const number = parseInt(document.getElementById("numberInput").value);
+      const output = numberTranslations[lang][number] || "Translation not found.";
+      document.getElementById("numberOutput").textContent = `Translation: ${output}`;
+      createFlashcards();
+    }
+
+    document.getElementById("language").addEventListener("change", createFlashcards);
+    window.onload = createFlashcards;
+  </script>
+</body>
+</html>
